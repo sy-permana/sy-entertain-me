@@ -22,6 +22,7 @@ module.exports = errorHandler = (err, req, res, next) => {
     default:
       console.log(err.name)
       console.log(err.message)
+      console.log(err)
       errors.push('internal server error')
   }
 

@@ -5,7 +5,7 @@ class MoviesController {
   static async findAll (req, res, next) {
     try {
       const movies = await Movie.find()
-      res.status(200).json({ movies })
+      res.status(200).json(movies)
     } catch (error) {
       next(error)
     }
@@ -16,7 +16,7 @@ class MoviesController {
       const { id } = req.params
       const movie = await Movie.findOne(id)
       if (!movie) throw { name: 'NOT_FOUND' }
-      res.status(200).json({ movie })
+      res.status(200).json(movie)
     } catch (error) {
       next(error)
     }

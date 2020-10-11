@@ -5,7 +5,7 @@ class TvSeriesController {
   static async findAll (req, res, next) {
     try {
       const tvseries = await TvSeries.find()
-      res.status(200).json({ tvseries })
+      res.status(200).json(tvseries)
     } catch (error) {
       next(error)
     }
@@ -16,7 +16,7 @@ class TvSeriesController {
       const { id } = req.params
       const tvseries = await TvSeries.findOne(id)
       if (!tvseries) throw { name: 'NOT_FOUND' }
-      res.status(200).json({ tvseries })
+      res.status(200).json(tvseries)
     } catch (error) {
       next(error)
     }

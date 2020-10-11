@@ -5,10 +5,12 @@ const Movies = db.collection('movies')
 
 class Movie {
   static find() {
+    console.log('request: fetch all Movies')
     return Movies.find().toArray()
   }
 
   static findOne(id) {
+    console.log('request: fetch one Movie')
     return Movies.findOne({ _id: ObjectId(id) })
   }
 
@@ -21,6 +23,7 @@ class Movie {
       tags: []
     }
   ) {
+    console.log('request: create new Movie')
     return Movies.insertOne(data)
   }
 
@@ -34,6 +37,7 @@ class Movie {
       tags: []
     }
   ) {
+    console.log('request: update Movie')
     const { title, overview, poster_path, popularity, tags } = payload
     const options = { upsert: false }
     const updateDoc = {
@@ -49,6 +53,7 @@ class Movie {
   }
 
   static delete(id) {
+    console.log('request: delete Movie')
     return Movies.deleteOne({ _id: ObjectId(id) })
   }
 }

@@ -5,10 +5,12 @@ const TvSeries = db.collection('tvseries')
 
 class TvSeriesModel {
   static find() {
+    console.log('request: fetch all Tv Series')
     return TvSeries.find().toArray()
   }
 
   static findOne(id) {
+    console.log('request: fetch one Tv Series')
     return TvSeries.findOne({ _id: ObjectId(id) })
   }
 
@@ -21,6 +23,7 @@ class TvSeriesModel {
       tags: []
     }
   ) {
+    console.log('request: create new Tv Series')
     return TvSeries.insertOne(data)
   }
 
@@ -34,6 +37,7 @@ class TvSeriesModel {
       tags: []
     }
   ) {
+    console.log('request: update Tv Series')
     const { title, overview, poster_path, popularity, tags } = payload
     const options = { upsert: false }
     const updateDoc = {
@@ -49,6 +53,7 @@ class TvSeriesModel {
   }
 
   static delete(id) {
+    console.log('request: delete Tv Series')
     return TvSeries.deleteOne({ _id: ObjectId(id) })
   }
 }
