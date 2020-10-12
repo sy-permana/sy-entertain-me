@@ -8,4 +8,34 @@ module.exports = class TvSeries {
       url: '/series'
     })
   }
+
+  static findOne (id) {
+    return Series({
+      url: `/series/${id}`,
+      method: 'GET'
+    })
+  }
+
+  static create (payload) {
+    return Series({
+      url: '/series',
+      method: 'POST',
+      data: payload
+    })
+  }
+
+  static update (id, payload) {
+    return Series({
+      url: `/series/${id}`,
+      method: 'PUT',
+      data: payload
+    })
+  }
+
+  static delete (id) {
+    return Series({
+      url: `/series/${id}`,
+      method: 'DELETE'
+    })
+  }
 }
