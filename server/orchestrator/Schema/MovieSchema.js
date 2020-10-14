@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server')
 const { movieAxios } = require('../config/axios')
+const redis = require('../config/redis')
+const redisInvalidation = require('../helpers/redisInvalidation')
 
 const typeDefs = gql`
   type Movie {
@@ -43,43 +45,72 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     movies: async () => {
-      const data = await movieAxios({
-        url: '/movies',
-        method: 'get'
-      })
-      return data.data
+      try {
+        const cacheMovies = await redis.get('movies')
+        if (cacheMovies) {
+          return JSON.parse(cacheMovies)
+        } else {
+          const data = await movieAxios({
+            url: '/movies',
+            method: 'get'
+          })
+          await redis.set('movies', JSON.stringify(data.data))
+          return data.data
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
     movie: async (_, args) => {
-      const data = await movieAxios({
-        url: '/movies/' + args.movieId,
-        method: 'get'
-      })
-      return data.data
+      try {
+        const data = await movieAxios({
+          url: '/movies/' + args.movieId,
+          method: 'get'
+        })
+        return data.data
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   Mutation: {
     addMovie: async (_, args) => {
-      const result = await movieAxios({
-        url: '/movies',
-        method: 'post',
-        data: args.payload
-      })
-      return result.data
+      try {
+        const result = await movieAxios({
+          url: '/movies',
+          method: 'post',
+          data: args.payload
+        })
+        redisInvalidation('movies', 'create', result.data.movies)
+        return result.data
+      } catch (error) {
+        console.log(error)
+      }
     },
     delMovie: async (_, args) => {
-      const result = await movieAxios({
-        url: '/movies/' + args.movieId,
-        method: 'delete'
-      })
-      return result.data
+      try {
+        const result = await movieAxios({
+          url: '/movies/' + args.movieId,
+          method: 'delete'
+        })
+        redisInvalidation('movies')
+        return result.data
+      } catch (error) {
+        console.log(error)
+      }
     },
     putMovie: async (_, args) => {
-      const result = await movieAxios({
-        url: '/movies/' + args.movieId,
-        method: 'put',
-        data: args.payload
-      })
-      return result.data
+      try {
+        const result = await movieAxios({
+          url: '/movies/' + args.movieId,
+          method: 'put',
+          data: args.payload
+        })
+        redisInvalidation('movies')
+        return result.data
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

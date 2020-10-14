@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server')
 const { seriesAxios } = require('../config/axios')
+const redis = require('../config/redis')
+const redisInvalidation = require('../helpers/redisInvalidation')
 
 const typeDefs = gql`
   type Series {
@@ -43,43 +45,72 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     series: async () => {
-      const data = await seriesAxios({
-        url: '/series',
-        method: 'get'
-      })
-      return data.data
+      try {
+        const cacheSeries = await redis.get('series')
+        if (cacheSeries) {
+          return JSON.parse(cacheSeries)
+        } else {
+          const data = await seriesAxios({
+            url: '/series',
+            method: 'get'
+          })
+          await redis.set('series', JSON.stringify(data.data))
+          return data.data
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
     seriesOne: async (_, args) => {
-      const data = await seriesAxios({
-        url: '/series/' + args.seriesId,
-        method: 'get'
-      })
-      return data.data
+      try {
+        const data = await seriesAxios({
+          url: '/series/' + args.seriesId,
+          method: 'get'
+        })
+        return data.data
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   Mutation: {
     addSeries: async (_, args) => {
-      const result = await seriesAxios({
-        url: '/series',
-        method: 'post',
-        data: args.payload
-      })
-      return result.data
+      try {
+        const result = await seriesAxios({
+          url: '/series',
+          method: 'post',
+          data: args.payload
+        })
+        redisInvalidation('series', 'create', result.data.tvseries)
+        return result.data
+      } catch (error) {
+        console.log(error)
+      }
     },
     delSeries: async (_, args) => {
-      const result = await seriesAxios({
-        url: '/series/' + args.seriesId,
-        method: 'delete'
-      })
-      return result.data
+      try {
+        const result = await seriesAxios({
+          url: '/series/' + args.seriesId,
+          method: 'delete'
+        })
+        redisInvalidation('series')
+        return result.data
+      } catch (error) {
+        console.log(error)
+      }
     },
     putSeries: async (_, args) => {
-      const result = await seriesAxios({
-        url: '/series/' + args.seriesId,
-        method: 'put',
-        data: args.payload
-      })
-      return result.data
+      try {
+        const result = await seriesAxios({
+          url: '/series/' + args.seriesId,
+          method: 'put',
+          data: args.payload
+        })
+        redisInvalidation('series')
+        return result.data
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

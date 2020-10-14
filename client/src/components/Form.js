@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 
 export default props => {
-  const { register, handleSubmit, error } = useForm()
+  const { register, handleSubmit } = useForm()
 
   const onSubmit = data => {
     props.handleOnSubmit(data)

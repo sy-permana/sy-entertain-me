@@ -1,6 +1,6 @@
 import React from 'react'
 import FormInput from '../components/Form'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_MOVIE } from '../config/query/movieMutation'
 import M from  'materialize-css'
@@ -22,7 +22,7 @@ export default function Addpage(params) {
       }
     })
     if (addMovie) {
-      history.goBack()
+      history.push('/')
       M.toast({html: 'Add success'})
     }
   }

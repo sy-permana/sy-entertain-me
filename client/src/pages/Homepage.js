@@ -10,7 +10,7 @@ export default function Homepage () {
 
   useEffect(() => {
     if (history.action) refetch()
-  }, [history.action])
+  }, [history.action, refetch])
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;

@@ -27,7 +27,7 @@ const Detailed = props => {
       <h2 className="header">Detail Page</h2>
       <div className="card horizontal">
         <div className="card-image">
-          <img src={props.data.poster_path} style={{ width: '15rem' }} />
+          <img src={props.data.poster_path} style={{ width: '15rem' }} alt={props.data.title} />
         </div>
         <div className="card-stacked">
           <div className="card-content">

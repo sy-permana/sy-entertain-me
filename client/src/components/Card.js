@@ -13,11 +13,13 @@ const Card = props => {
   const toCheckFavorites = useQuery( GET_FAVORITE )
   const [isFavorite, setIsFavorite] = React.useState(false)
 
-  const handleOnClick = () => {
+  const handleOnClick = (e) => {
+    e.preventDefault()
     history.push(`/${props.group}/${props.data._id}`)
   }
 
-  const handleFavorite = () => {
+  const handleFavorite = (e) => {
+    e.preventDefault()
     const { favorites } = client.readQuery({ query: GET_FAVORITE })
     client.writeQuery({
       query: GET_FAVORITE,
@@ -46,28 +48,34 @@ const Card = props => {
     }
   }
 
-  const checkFavorite = () => {
+  // const checkFavorite = () => {
+  //   if (!toCheckFavorites.loading) {
+  //     const searchFavorite = toCheckFavorites.data.favorites.find(
+  //       favorites => favorites._id === props.data._id
+  //     )
+  //     if (searchFavorite) setIsFavorite(true)
+  //   }
+  // }
+
+  React.useEffect(() => {
     if (!toCheckFavorites.loading) {
       const searchFavorite = toCheckFavorites.data.favorites.find(
         favorites => favorites._id === props.data._id
       )
       if (searchFavorite) setIsFavorite(true)
     }
-  }
-
-  React.useEffect(() => {
-    checkFavorite()
-  }, [])
+  }, [toCheckFavorites])
 
   return (
     <div className="card" style={{ width: `${90 / 3}%`, marginRight: `${10 / 3}%`, minWidth: '200px'}}>
       <div className="card-image">
-        <img src={props.data.poster_path} style={{ height: '200px', objectFit: 'cover' }} />
+        <img src={props.data.poster_path} style={{ height: '200px', objectFit: 'cover' }} alt={props.data.title} />
         {
           props.group !== 'favorites' && !isFavorite && (
             <a
               className="btn-floating halfway-fab waves-effect waves-light teal"
               onClick={handleFavorite}
+              href="#"
             >
               <i className="material-icons">favorite</i>
             </a>

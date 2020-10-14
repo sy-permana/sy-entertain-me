@@ -18,7 +18,7 @@ export default function Detail (props) {
       default:
         setQuery(GET_ONE_SERIES)
     }
-  }, [query])
+  }, [query, props.group])
 
   if (loading) return <p>loading</p>
   if(error) {

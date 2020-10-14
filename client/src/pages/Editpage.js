@@ -10,7 +10,7 @@ export default function Editpage(props) {
   const history = useHistory()
   const [putMovie] = useMutation(UPDATE_MOVIE)
   const { id } = useParams()
-  const { loading, error, data, refetch } = useQuery(GET_ONE_MOVIE, { variables: { id } })
+  const { loading, error, data } = useQuery(GET_ONE_MOVIE, { variables: { id } })
 
   const updateMovie = async (data) => {
     const editMovie = await putMovie({
