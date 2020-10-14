@@ -22,26 +22,42 @@ const Detailed = props => {
   }
 
   return (
-    <div className="mycard">
-      <span>{props.data.__typename}</span>
-      <h1>{props.data.title}</h1>
-      <p>{props.data.overview}</p>
-      <p>{props.data.popularity}</p>
-      <Tags data={props.data.tags} row />
-      {
-        props.data.__typename === 'Movie'
-        ?
-        <div>
-          <button type="button" onClick={handleOnClick}>back</button>
-          <button type="button" onClick={(e) => handleDelete (props.data._id)}>delete</button>
-          <button type="button" onClick={(e) => history.push(`/edit-movie/${props.data._id}`)}>edit</button>
+  <>
+    <div className="col s12 m7">
+      <h2 className="header">Detail Page</h2>
+      <div className="card horizontal">
+        <div className="card-image">
+          <img src={props.data.poster_path} style={{ width: '15rem' }} />
         </div>
-        :
-        <div>
-          <button type="button" onClick={handleOnClick}>back</button>
+        <div className="card-stacked">
+          <div className="card-content">
+            <span className="card-title">{props.data.title}</span>
+            <p>{props.data.overview}</p>
+          </div>
+          <div className="card-action">
+            <span>Popularity: {props.data.popularity}</span>
+            <br /><br />
+            <Tags data={props.data.tags} row />
+          </div>
+          <div className="card-action">
+          {
+            props.data.__typename === 'Movie'
+            ?
+            <div>
+              <button type="button" className="btn" style={{ marginRight: '1rem' }} onClick={handleOnClick}>back</button>
+              <button type="button" className="btn" style={{ marginRight: '1rem' }} onClick={(e) => handleDelete (props.data._id)}>delete</button>
+              <button type="button" className="btn" onClick={(e) => history.push(`/edit-movie/${props.data._id}`)}>edit</button>
+            </div>
+            :
+            <div>
+              <button type="button" className="btn" onClick={handleOnClick}>back</button>
+            </div>
+          }
+          </div>
         </div>
-      }
+      </div>
     </div>
+  </>
   )
 }
 

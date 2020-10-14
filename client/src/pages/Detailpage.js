@@ -28,7 +28,6 @@ export default function Detail (props) {
 
   return (
     <div>
-      <p>Detail Page {id}</p>
       <Detailed data={data.movie ? data.movie : data.seriesOne} />
     </div>
   )
