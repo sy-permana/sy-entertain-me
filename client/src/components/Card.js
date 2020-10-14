@@ -5,6 +5,8 @@ import { useMutation, useQuery } from '@apollo/client'
 import { DELETE_MOVIE } from '../config/query/movieMutation'
 import { GET_FAVORITE } from '../config/query/graphqlQuery'
 import client from '../config/graphql'
+import M from  'materialize-css'
+
 const Card = props => {
   const history = useHistory()
   const [delMovie] = useMutation(DELETE_MOVIE)
@@ -29,14 +31,19 @@ const Card = props => {
     setIsFavorite(true)
   }
 
-  const handleDelete = (e, id) => {
+  const handleDelete = async (e, id) => {
     e.preventDefault()
-    delMovie({
+    const deleteMovie = await delMovie({
       variables: {
         id
       }
     })
-    props.refetch()
+    if (deleteMovie) {
+      await props.refetch()
+      M.toast({html: 'Delete success'})
+    } else {
+      M.toast({html: 'Delete error'})
+    }
   }
 
   const checkFavorite = () => {

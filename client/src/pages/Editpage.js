@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
 import { UPDATE_MOVIE } from '../config/query/movieMutation'
 import { GET_ONE_MOVIE } from '../config/query/graphqlQuery'
+import M from  'materialize-css'
 
 export default function Editpage(props) {
   const history = useHistory()
@@ -11,8 +12,8 @@ export default function Editpage(props) {
   const { id } = useParams()
   const { loading, error, data, refetch } = useQuery(GET_ONE_MOVIE, { variables: { id } })
 
-  const updateMovie = data => {
-    putMovie({
+  const updateMovie = async (data) => {
+    const editMovie = await putMovie({
       variables: {
         id: id,
         payload: {
@@ -24,8 +25,10 @@ export default function Editpage(props) {
         }
       }
     })
-    refetch()
-    history.goBack()
+    if (editMovie) {
+      M.toast({html: 'Edit success'})
+      history.goBack()
+    }
   }
 
   if (loading) return <p>loading...</p>

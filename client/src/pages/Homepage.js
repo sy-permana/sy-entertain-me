@@ -9,7 +9,7 @@ export default function Homepage () {
   const { loading, error, data, refetch } = useQuery(GET_ENTERTAINME)
 
   useEffect(() => {
-    if (history.action === 'POP') refetch()
+    if (history.action) refetch()
   }, [history.action])
 
   if (loading) return <p>Loading...</p>;

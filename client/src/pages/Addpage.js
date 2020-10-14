@@ -9,8 +9,8 @@ export default function Addpage(params) {
   const history = useHistory()
   const [createMovie] = useMutation(CREATE_MOVIE)
 
-  const addMovie = data => {
-    createMovie({
+  const addMovie = async (data) => {
+    const addMovie = await createMovie({
       variables: {
         payload: {
           title: data.title,
@@ -21,8 +21,10 @@ export default function Addpage(params) {
         }
       }
     })
-    history.goBack()
-    M.toast({html: 'I am a toast!'})
+    if (addMovie) {
+      history.goBack()
+      M.toast({html: 'Add success'})
+    }
   }
 
   return (
