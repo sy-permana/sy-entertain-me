@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom'
+import 'materialize-css/dist/css/materialize.min.css';
 
 ReactDOM.render(
   <React.StrictMode>

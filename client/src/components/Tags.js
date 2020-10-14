@@ -7,11 +7,12 @@ export default (props) => {
   return (
     <div style={{
       display: 'flex',
-      flexDirection: flexDir
+      flexDirection: flexDir,
+      justifyContent: 'right'
     }}>
       {
-        props.data.map(tag => (
-          <span className="tags">{ tag }</span>
+        props.data.map((tag, i) => (
+          <span className="tags" key={i}>{ tag }</span>
         ))
       }
     </div>

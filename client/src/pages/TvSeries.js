@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import { GET_SERIES } from '../config/graphqlQuery'
+import { GET_SERIES } from '../config/query/graphqlQuery'
 import CardDeck from '../components/CardDeck.js'
 
 export default function SeriesPage () {
@@ -13,7 +13,7 @@ export default function SeriesPage () {
     <>
       <h1>Tv Series Page</h1>
       <p>Series:</p>
-      <CardDeck data={data.series} />
+      <CardDeck data={data.series} group={"tvseries"} />
     </>
   )
 }

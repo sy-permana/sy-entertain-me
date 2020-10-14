@@ -75,8 +75,8 @@
 .tags {
   border-radius: 10px;
   font-size: 0.8rem;
-  border: 1px solid #61dafb;
-  padding: 0.2rem 0.3rem;
-  background-color: #414141;
-  color: beige;
+  padding: 0.1rem 0.4rem;
+  background-color: #000;
+  color: #fff;
+  margin-right: 0.3rem;
 }
